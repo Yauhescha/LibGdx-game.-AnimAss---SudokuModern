@@ -42,7 +42,7 @@ public class MainMenuScreen extends ScreenAdapter {
         camera.update();
         viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         viewport.apply(true);
-        font = FontUtil.generateFont(Color.WHITE);
+        font = FontUtil.generateFont(Color.BLACK);
 
         Table table = new Table();
         table.setFillParent(true);

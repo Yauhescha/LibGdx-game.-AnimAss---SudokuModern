@@ -55,7 +55,7 @@ public class SelectDifficultyScreen extends ScreenAdapter {
 
         Table table = new Table();
         table.setFillParent(true);
-        font = FontUtil.generateFont(Color.WHITE);
+        font = FontUtil.generateFont(Color.BLACK);
         innerTable = new Table();
         innerTable.setFillParent(true);
 

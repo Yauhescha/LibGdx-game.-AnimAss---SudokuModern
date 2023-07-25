@@ -60,7 +60,6 @@ public class GameScreen extends ScreenAdapter {
     public Texture textureFilledCell;
     public Texture texturePermanentCell;
 
-    public static BitmapFont fontWhite;
     public static BitmapFont fontBlack;
 
     private float elapsedTime;
@@ -84,7 +83,6 @@ public class GameScreen extends ScreenAdapter {
         shapeRenderer = new ShapeRenderer();
 
 
-        fontWhite = FontUtil.generateFont(Color.WHITE);
         fontBlack = FontUtil.generateFont(Color.BLACK);
 
         textureEmptyCell = new Texture(Gdx.files.internal("ui/textureEmptyCell.png"));
@@ -127,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
         Texture texture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
         TextureRegion textureRegion = new TextureRegion(texture);
         TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(textureRegion);
-        infoLabel = new ImageTextButton("INFO", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, fontWhite));
+        infoLabel = new ImageTextButton("INFO", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, fontBlack));
         tableContainer.add(infoLabel).expandX().fillX().padTop(10).padBottom(20).row();
 
         tableContainer.add(loadSudokuBoard()).center().row();
@@ -136,7 +134,7 @@ public class GameScreen extends ScreenAdapter {
         Texture buttonTexture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
         TextureRegion btnBack = new TextureRegion(buttonTexture);
         TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnBack);
-        ImageTextButton imageTextButton1 = new ImageTextButton("Back", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontWhite));
+        ImageTextButton imageTextButton1 = new ImageTextButton("Back", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontBlack));
         tableContainer.add(imageTextButton1).center().padTop(10).row();
         imageTextButton1.addListener(new ClickListener() {
             @Override
@@ -164,7 +162,7 @@ public class GameScreen extends ScreenAdapter {
                 TextureRegionDrawable regionDrawable = new TextureRegionDrawable(getCellTexture(tile1));
                 ImageTextButton imageTextButton = new ImageTextButton(
                         tile1.getNumber() + "",
-                        new ImageTextButton.ImageTextButtonStyle(regionDrawable, null, null, fontWhite));
+                        new ImageTextButton.ImageTextButtonStyle(regionDrawable, null, null, fontBlack));
                 imageTextButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -263,7 +261,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        shapeRenderer.setColor(Color.BLACK);
         float x = tableCells.getX(); // X-координата верхнего левого угла квадрата
         float y = tableCells.bottom().getY(); // Y-координата верхнего левого угла квадрата
         shapeRenderer.rect(x, y, tableCells.getWidth(), tableCells.getMinHeight());
@@ -295,7 +293,7 @@ public class GameScreen extends ScreenAdapter {
             Texture buttonTexture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
             TextureRegion btnBack = new TextureRegion(buttonTexture);
             TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnBack);
-            ImageTextButton imageTextButton1 = new ImageTextButton("See image", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontWhite));
+            ImageTextButton imageTextButton1 = new ImageTextButton("See image", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontBlack));
             tableContainer.add(imageTextButton1).center().padTop(10).row();
             imageTextButton1.addListener(new ClickListener() {
                 @Override

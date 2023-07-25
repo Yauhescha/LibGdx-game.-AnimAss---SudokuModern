@@ -69,7 +69,7 @@ public class SelectLevelScreen extends ScreenAdapter {
 
         Table table = new Table();
         table.setFillParent(true);
-        font = FontUtil.generateFont(Color.WHITE);
+        font = FontUtil.generateFont(Color.BLACK);
         innerTable = new Table();
 
         createButton(headerTexture, levelType.name().replace("_", " ") + "\n" + category, 50, null);

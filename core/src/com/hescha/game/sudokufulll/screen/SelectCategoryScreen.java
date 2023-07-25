@@ -62,7 +62,7 @@ public class SelectCategoryScreen extends ScreenAdapter {
 
         Table table = new Table();
         table.setFillParent(true);
-        font = FontUtil.generateFont(Color.WHITE);
+        font = FontUtil.generateFont(Color.BLACK);
         innerTable = new Table();
 
         createButton(headerTexture, sudokuDifficulty.name().replace("_", " "), 50, null);

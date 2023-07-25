@@ -48,7 +48,7 @@ public class GalleryScreen extends ScreenAdapter {
         viewport.apply(true);
         SpriteBatch batch = new SpriteBatch();
 
-        bitmapFont = FontUtil.generateFont(Color.WHITE);
+        bitmapFont = FontUtil.generateFont(Color.BLACK);
 
         stageInfo = new Stage(viewport, batch);
 

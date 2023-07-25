@@ -15,7 +15,7 @@ public class AnimAssSudokuModern extends Game {
     public static float WORLD_WIDTH = 720;
     public static float WORLD_HEIGHT = 1280;
     public static AnimAssSudokuModern launcher;
-    public static Color BACKGROUND_COLOR = new Color(242f / 255, 231f / 255, 216f / 255, 1);
+    public static Color BACKGROUND_COLOR = new Color(13f / 255, 24f / 255, 39f / 255, 1);
 
     @Override
     public void create() {
