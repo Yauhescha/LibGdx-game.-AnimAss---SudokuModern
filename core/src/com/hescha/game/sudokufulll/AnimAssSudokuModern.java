@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.hescha.game.sudokufulll.screen.LoadingScreen;
 
 public class AnimAssSudokuModern extends Game {
-    public static final String PREFERENCE_SAVING_PATH = "AnimAss_Sudoku";
+    public static final String PREFERENCE_SAVING_PATH = "AnimAss_Sudoku_Mondrn";
 
     public static final AssetManager assetManager = new AssetManager();
 

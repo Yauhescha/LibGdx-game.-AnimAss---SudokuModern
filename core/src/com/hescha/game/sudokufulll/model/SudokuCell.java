@@ -33,4 +33,5 @@ public class SudokuCell implements Serializable {
     public int getNumber() {
         return number;
     }
+
 }

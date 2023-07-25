@@ -35,6 +35,9 @@ import com.hescha.game.sudokufulll.service.SudokuService;
 import com.hescha.game.sudokufulll.util.FontUtil;
 import com.hescha.game.sudokufulll.util.Level;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class GameScreen extends ScreenAdapter {
     public final Level level;
@@ -52,15 +55,13 @@ public class GameScreen extends ScreenAdapter {
     private ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     TextureRegionDrawable[][] boardTextures = new TextureRegionDrawable[9][9];
-    ImageTextButton[][] boardNumbers = new ImageTextButton[9][9];
-
 
     public Texture textureSelectedCell;
     public Texture textureEmptyCell;
-    public Texture textureFilledCell;
     public Texture texturePermanentCell;
 
     public static BitmapFont fontBlack;
+    public static BitmapFont fontRed;
 
     private float elapsedTime;
     private float minTime;
@@ -69,9 +70,9 @@ public class GameScreen extends ScreenAdapter {
 
 
     TextureRegion textureRegion1;
-    TextureRegion textureRegion2;
-    TextureRegion textureRegion3;
-    TextureRegion textureRegion4;
+    TextureRegion textureRegionSelectedCell;
+    TextureRegion textureRegionEmptyCell;
+    Map<Integer, TextureRegion> map = new HashMap<>();
 
     public GameScreen(Level level) {
         this.level = level;
@@ -84,19 +85,22 @@ public class GameScreen extends ScreenAdapter {
 
 
         fontBlack = FontUtil.generateFont(Color.BLACK);
+        fontRed = FontUtil.generateFont(Color.RED);
 
         textureEmptyCell = new Texture(Gdx.files.internal("ui/textureEmptyCell.png"));
         textureSelectedCell = new Texture(Gdx.files.internal("ui/textureSelectedCell.png"));
-        textureFilledCell = new Texture(Gdx.files.internal("ui/textureFilledCell.png"));
         texturePermanentCell = new Texture(Gdx.files.internal("ui/texturePermanentCell.png"));
 
 
         textureRegion1 = new TextureRegion(texturePermanentCell);
-        textureRegion2 = new TextureRegion(textureSelectedCell);
-        textureRegion3 = new TextureRegion(textureFilledCell);
-        textureRegion4 = new TextureRegion(textureEmptyCell);
+        textureRegionSelectedCell = new TextureRegion(textureSelectedCell);
+        textureRegionEmptyCell = new TextureRegion(textureEmptyCell);
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle(fontBlack, Color.BLACK);
+        map.put(0, textureRegionEmptyCell);
+        for (int i = 1; i <= 9; i++) {
+            TextureRegion numberTexture = new TextureRegion(new Texture(Gdx.files.internal(level.getImagePath() + i + ".jpg")));
+            map.put(i, numberTexture);
+        }
 
         float worldWidth = WORLD_WIDTH;
         float worldHeight = WORLD_HEIGHT;
@@ -117,9 +121,6 @@ public class GameScreen extends ScreenAdapter {
         tableContainer = new Table();
         tableContainer.setFillParent(true);
         stageInfo.addActor(tableContainer);
-
-        Label emptyLabel1 = new Label(" ", labelStyle);
-        tableContainer.add(emptyLabel1).row();
 
 
         Texture texture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
@@ -158,21 +159,19 @@ public class GameScreen extends ScreenAdapter {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                SudokuCell tile1 = tiles[i][j];
-                TextureRegionDrawable regionDrawable = new TextureRegionDrawable(getCellTexture(tile1));
-                ImageTextButton imageTextButton = new ImageTextButton(
-                        tile1.getNumber() + "",
-                        new ImageTextButton.ImageTextButtonStyle(regionDrawable, null, null, fontBlack));
+                SudokuCell sudokuCell = tiles[i][j];
+                TextureRegionDrawable regionDrawable = new TextureRegionDrawable(textureRegionEmptyCell);
+                ImageTextButton imageTextButton = new ImageTextButton("",
+                        new ImageTextButton.ImageTextButtonStyle(regionDrawable, regionDrawable, regionDrawable, fontBlack));
                 imageTextButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        System.out.println(CLICKED_BY_BUMBR + tile1.getNumber());
-                        GameScreen.sudoku.setSelectedSell(tile1);
+                        System.out.println(CLICKED_BY_BUMBR + sudokuCell.getNumber());
+                        GameScreen.sudoku.setSelectedSell(sudokuCell);
                     }
                 });
 
                 boardTextures[i][j] = regionDrawable;
-                boardNumbers[i][j] = imageTextButton;
 
                 i++;
                 j++;
@@ -203,9 +202,9 @@ public class GameScreen extends ScreenAdapter {
         //print numbers
         float size = WORLD_WIDTH / 8;
         for (int i = 1; i <= 9; i++) {
-            TextureRegion btnBack = new TextureRegion(AnimAssSudokuModern.assetManager.get("ui/fieldSelectionButton.png", Texture.class));
-            TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnBack);
-            ImageTextButton imageTextButton1 = new ImageTextButton(i + "", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontBlack));
+            TextureRegion numberTexture = map.get(i);
+            TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(numberTexture);
+            ImageTextButton imageTextButton1 = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(buttonDrawable1, null, null, fontBlack));
             tableNumbers.add(imageTextButton1).size(size).pad(10);
             int finalI = i;
             imageTextButton1.addListener(new ClickListener() {
@@ -255,8 +254,7 @@ public class GameScreen extends ScreenAdapter {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 SudokuCell tile = sudoku.getBoard()[i][j];
-                boardTextures[i][j].setRegion(getCellTexture(tile));
-                boardNumbers[i][j].setText(tile.getNumber() + "");
+                boardTextures[i][j].setRegion(map.get(tile.getNumber()));
             }
         }
 
@@ -272,18 +270,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-    public TextureRegion getCellTexture(SudokuCell cell) {
-        if (cell.getCellType() == SudokuCellType.DISABLED) {
-            return textureRegion1;
-        } else if (GameScreen.sudoku.getSelectedSell() == cell) {
-            return textureRegion2;
-        } else if (cell.getNumber() != 0) {
-            return textureRegion3;
-        } else {
-            return textureRegion4;
-        }
-    }
-
     private void updatePuzzleStatus() {
         isSolved = SudokuService.isRowSolvedCorrect(sudoku);
         System.out.println(CHECK_IF_GAME_EDNDED + isSolved);
@@ -298,7 +284,7 @@ public class GameScreen extends ScreenAdapter {
             imageTextButton1.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    isSolved=false;
+                    isSolved = false;
                     AnimAssSudokuModern.launcher.setScreen(new GalleryScreen(level));
 
                 }

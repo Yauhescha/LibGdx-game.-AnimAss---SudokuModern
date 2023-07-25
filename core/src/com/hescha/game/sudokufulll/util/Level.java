@@ -1,5 +1,6 @@
 package com.hescha.game.sudokufulll.util;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.hescha.game.sudokufulll.model.Sudoku;
 import com.hescha.game.sudokufulll.model.SudokuCell;
 import com.hescha.game.sudokufulll.model.SudokuCellType;
