@@ -143,7 +143,7 @@ public class GameScreen extends ScreenAdapter {
         });
 
 
-        levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + "-" + level.getCategory() + "-" + level.getName();
+        levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + "-" + level.getName();
         Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
         minTime = prefs.getInteger(levelScoreSavingPath, 9999);
     }
@@ -245,7 +245,6 @@ public class GameScreen extends ScreenAdapter {
             elapsedTime += Gdx.graphics.getDeltaTime();
         }
         infoLabel.setText("Difficulty: " + level.getSudoku().getSudokuDifficulty().name().replace("_", " ") + "\n" +
-                "Category: " + level.getCategory() + "\n" +
                 "Seconds: " + (int) elapsedTime + "\n" +
                 "Seconds min: " + (int) minTime);
 

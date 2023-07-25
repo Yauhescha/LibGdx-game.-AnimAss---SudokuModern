@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 public class SelectLevelScreen extends ScreenAdapter {
     public static SelectLevelScreen screen;
     private SudokuDifficulty levelType;
-    private String category;
     private List<Level> levels;
     private Stage stage;
     private BitmapFont font;
@@ -44,10 +43,9 @@ public class SelectLevelScreen extends ScreenAdapter {
     private Viewport viewport;
     private boolean isGalleryMode;
 
-    public SelectLevelScreen(SudokuDifficulty levelType, String category, List<Level> levels, boolean isGalleryMode) {
+    public SelectLevelScreen(SudokuDifficulty levelType, List<Level> levels, boolean isGalleryMode) {
         this.levelType = levelType;
-        this.category = category;
-        this.levels = levels.stream().filter(level -> category.equals(level.getCategory())).collect(Collectors.toList());
+        this.levels = levels;
         this.isGalleryMode = isGalleryMode;
     }
 
@@ -72,14 +70,14 @@ public class SelectLevelScreen extends ScreenAdapter {
         font = FontUtil.generateFont(Color.BLACK);
         innerTable = new Table();
 
-        createButton(headerTexture, levelType.name().replace("_", " ") + "\n" + category, 50, null);
-        createButton(buttonTexture, "BACK", 100, addAction(() -> {screen=null;AnimAssSudokuModern.launcher.setScreen(SelectCategoryScreen.screen);}));
+        createButton(headerTexture, levelType.name().replace("_", " "), 50, null);
+        createButton(buttonTexture, "BACK", 100, addAction(() -> {screen=null;AnimAssSudokuModern.launcher.setScreen(SelectDifficultyScreen.screen);}));
 
 
         Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
         for (Level level : levels) {
 
-            String levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + "-" + level.getCategory() + "-" + level.getName();
+            String levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + level.getName();
             int moves = prefs.getInteger(levelScoreSavingPath, -1);
             boolean isPassed = moves != -1;
 

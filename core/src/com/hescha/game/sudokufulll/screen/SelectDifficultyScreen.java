@@ -4,6 +4,7 @@ package com.hescha.game.sudokufulll.screen;
 import static com.hescha.game.sudokufulll.AnimAssSudokuModern.BACKGROUND_COLOR;
 import static com.hescha.game.sudokufulll.AnimAssSudokuModern.WORLD_HEIGHT;
 import static com.hescha.game.sudokufulll.AnimAssSudokuModern.WORLD_WIDTH;
+import static com.hescha.game.sudokufulll.util.LevelUtil.loadLevels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -25,8 +26,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.sudokufulll.AnimAssSudokuModern;
 import com.hescha.game.sudokufulll.MyFunctionalInterface;
+import com.hescha.game.sudokufulll.model.Level;
 import com.hescha.game.sudokufulll.model.SudokuDifficulty;
 import com.hescha.game.sudokufulll.util.FontUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SelectDifficultyScreen extends ScreenAdapter {
     public static SelectDifficultyScreen screen;
@@ -59,13 +65,15 @@ public class SelectDifficultyScreen extends ScreenAdapter {
         innerTable = new Table();
         innerTable.setFillParent(true);
 
+        ArrayList<Level> levels = loadLevels();
 
         createButton(headerTexture, isGalleryMode ? "GALLERY" : "Select difficulty", 50, null);
         createButton(buttonTexture, "BACK", 100, addAction(() -> {
             screen = null;AnimAssSudokuModern.launcher.setScreen(MainMenuScreen.screen);}));
         for (SudokuDifficulty difficulty : SudokuDifficulty.values()) {
+            List<Level> filtered = levels.stream().filter(level -> difficulty == level.getSudoku().getSudokuDifficulty()).collect(Collectors.toList());
             createButton(buttonTexture, difficulty.name().replace("_", " "), 30,
-                    addAction(() -> AnimAssSudokuModern.launcher.setScreen(new SelectCategoryScreen(difficulty, isGalleryMode))));
+                    addAction(() -> AnimAssSudokuModern.launcher.setScreen(new SelectLevelScreen(difficulty, filtered, isGalleryMode))));
         }
 
         ScrollPane scrollPane = new ScrollPane(innerTable);
