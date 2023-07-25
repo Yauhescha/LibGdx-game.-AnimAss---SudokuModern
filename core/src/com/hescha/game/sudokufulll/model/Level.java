@@ -1,4 +1,4 @@
-package com.hescha.game.sudokufulll.util;
+package com.hescha.game.sudokufulll.model;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.hescha.game.sudokufulll.model.Sudoku;

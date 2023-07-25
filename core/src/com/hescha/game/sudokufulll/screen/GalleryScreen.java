@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hescha.game.sudokufulll.AnimAssSudokuModern;
 import com.hescha.game.sudokufulll.util.FontUtil;
-import com.hescha.game.sudokufulll.util.Level;
+import com.hescha.game.sudokufulll.model.Level;
 
 
 public class GalleryScreen extends ScreenAdapter {

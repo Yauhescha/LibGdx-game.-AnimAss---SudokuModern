@@ -4,8 +4,7 @@ package com.hescha.game.sudokufulll.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.hescha.game.sudokufulll.model.SudokuDifficulty;
-import com.hescha.game.sudokufulll.service.SudokuGenerator;
+import com.hescha.game.sudokufulll.model.Level;
 
 import java.util.ArrayList;
 

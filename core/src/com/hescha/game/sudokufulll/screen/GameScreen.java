@@ -16,11 +16,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -33,7 +31,7 @@ import com.hescha.game.sudokufulll.model.SudokuCell;
 import com.hescha.game.sudokufulll.model.SudokuCellType;
 import com.hescha.game.sudokufulll.service.SudokuService;
 import com.hescha.game.sudokufulll.util.FontUtil;
-import com.hescha.game.sudokufulll.util.Level;
+import com.hescha.game.sudokufulll.model.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,9 +50,9 @@ public class GameScreen extends ScreenAdapter {
     Table tableContainer;
     Table tableCells;
     Table tableNumbers;
-    private ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     TextureRegionDrawable[][] boardTextures = new TextureRegionDrawable[9][9];
+    ImageTextButton[][] boardTexturesButtons = new ImageTextButton[9][9];
 
     public Texture textureSelectedCell;
     public Texture textureEmptyCell;
@@ -73,6 +71,7 @@ public class GameScreen extends ScreenAdapter {
     TextureRegion textureRegionSelectedCell;
     TextureRegion textureRegionEmptyCell;
     Map<Integer, TextureRegion> map = new HashMap<>();
+    OrthographicCamera camera;
 
     public GameScreen(Level level) {
         this.level = level;
@@ -81,7 +80,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         glyphLayout = new GlyphLayout();
-        shapeRenderer = new ShapeRenderer();
 
 
         fontBlack = FontUtil.generateFont(Color.BLACK);
@@ -104,7 +102,7 @@ public class GameScreen extends ScreenAdapter {
 
         float worldWidth = WORLD_WIDTH;
         float worldHeight = WORLD_HEIGHT;
-        OrthographicCamera camera = new OrthographicCamera(worldWidth, worldHeight);
+        camera = new OrthographicCamera(worldWidth, worldHeight);
         camera.position.set(worldWidth / 2, worldHeight / 2, 0);
         camera.update();
         viewport = new FitViewport(worldWidth, worldHeight, camera);
@@ -172,6 +170,7 @@ public class GameScreen extends ScreenAdapter {
                 });
 
                 boardTextures[i][j] = regionDrawable;
+                boardTexturesButtons[i][j] = imageTextButton;
 
                 i++;
                 j++;
@@ -258,15 +257,30 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        float x = tableCells.getX(); // X-координата верхнего левого угла квадрата
-        float y = tableCells.bottom().getY(); // Y-координата верхнего левого угла квадрата
-        shapeRenderer.rect(x, y, tableCells.getWidth(), tableCells.getMinHeight());
-        shapeRenderer.end();
-
         stageInfo.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stageInfo.draw();
+
+        batch.setProjectionMatrix(camera.projection);
+        batch.setTransformMatrix(camera.view);
+        batch.begin();
+
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                SudokuCell tile = sudoku.getBoard()[i][j];
+                if (sudoku.getSelectedSell() == tile) {
+                    ImageTextButton button = boardTexturesButtons[i][j];
+                    batch.draw(textureSelectedCell, tableCells.getX()+button.getX(), tableCells.getY()+button.getY(), button.getWidth(), button.getHeight());
+                }
+                if (tile.getCellType() == SudokuCellType.DISABLED) {
+                    ImageTextButton button = boardTexturesButtons[i][j];
+                    batch.draw(texturePermanentCell, tableCells.getX()+button.getX(), tableCells.getY()+button.getY(), button.getWidth(), button.getHeight());
+                }
+
+            }
+        }
+
+        batch.end();
     }
 
 

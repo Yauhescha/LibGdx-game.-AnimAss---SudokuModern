@@ -3,11 +3,10 @@ package com.hescha.game.sudokufulll.model;
 import java.io.Serializable;
 
 public enum SudokuDifficulty  implements Serializable {
-    FOR_KIDS(1),
-    EASY(30),
-    NORMAL(40),
-    HARDER(50),
-    HARD(60);
+    FOR_KIDS(10),
+    EASY(20),
+    NORMAL(30),
+    HARDER(40);
 
     final int numberOfRemovedCells;
 

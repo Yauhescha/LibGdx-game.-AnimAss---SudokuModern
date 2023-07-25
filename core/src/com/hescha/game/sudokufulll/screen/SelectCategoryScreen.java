@@ -27,7 +27,7 @@ import com.hescha.game.sudokufulll.AnimAssSudokuModern;
 import com.hescha.game.sudokufulll.MyFunctionalInterface;
 import com.hescha.game.sudokufulll.model.SudokuDifficulty;
 import com.hescha.game.sudokufulll.util.FontUtil;
-import com.hescha.game.sudokufulll.util.Level;
+import com.hescha.game.sudokufulll.model.Level;
 
 import java.util.List;
 import java.util.stream.Collectors;
