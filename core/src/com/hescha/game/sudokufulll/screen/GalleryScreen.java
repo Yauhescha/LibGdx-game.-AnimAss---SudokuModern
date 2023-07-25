@@ -54,20 +54,31 @@ public class GalleryScreen extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stageInfo);
 
+        Texture buttonTexture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
+
+
         Table table = new Table();
         stageInfo.addActor(table);
         Table innerTable = new Table();
         table.setFillParent(true);
 
 
-        Texture mainImage = new Texture(Gdx.files.internal(level.getImagePath()));
-        TextureRegion mainBoard = new TextureRegion(mainImage);
-        TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(mainBoard);
-        ImageTextButton imageTextButton = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, bitmapFont));
-        innerTable.add(imageTextButton).top().row();
 
+        TextureRegion mainBoard2 = new TextureRegion(buttonTexture);
+        TextureRegionDrawable buttonDrawable2 = new TextureRegionDrawable(mainBoard2);
+        String text = level.getSudoku().getSudokuDifficulty().name() + "\n" + level.getCategory() + "\n"+ level.getName();
+        ImageTextButton imageTextButton2 = new ImageTextButton(text.replace("_", " "),
+                new ImageTextButton.ImageTextButtonStyle(buttonDrawable2, null, null, bitmapFont));
+        innerTable.add(imageTextButton2).top().row();
 
-        Texture buttonTexture = AnimAssSudokuModern.assetManager.get("ui/button.png", Texture.class);
+        for (int i = 1; i <= 9; i++) {
+            Texture mainImage = new Texture(Gdx.files.internal(level.getImagePath()+i+".jpg"));
+            TextureRegion mainBoard = new TextureRegion(mainImage);
+            TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(mainBoard);
+            ImageTextButton imageTextButton = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, bitmapFont));
+            innerTable.add(imageTextButton).top().row();
+        }
+
 
         TextureRegion btnBack = new TextureRegion(buttonTexture);
         TextureRegionDrawable buttonDrawable1 = new TextureRegionDrawable(btnBack);

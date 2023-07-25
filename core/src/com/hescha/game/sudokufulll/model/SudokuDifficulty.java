@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public enum SudokuDifficulty  implements Serializable {
     FOR_KIDS(10),
-    EASY(20),
-    NORMAL(30),
-    HARDER(40);
+    EASY(30),
+    NORMAL(40),
+    HARDER(50),
+    HARD(60);
 
     final int numberOfRemovedCells;
 
