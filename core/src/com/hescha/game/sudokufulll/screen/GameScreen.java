@@ -96,7 +96,7 @@ public class GameScreen extends ScreenAdapter {
 
         map.put(0, textureRegionEmptyCell);
         for (int i = 1; i <= 9; i++) {
-            TextureRegion numberTexture = new TextureRegion(new Texture(Gdx.files.internal(level.getImagePath() + i + ".jpg")));
+            TextureRegion numberTexture = new TextureRegion(new Texture(Gdx.files.internal(level.getImagePath() +"/"+ i + ".jpg")));
             map.put(i, numberTexture);
         }
 

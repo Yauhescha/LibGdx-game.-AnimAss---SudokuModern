@@ -71,13 +71,16 @@ public class SelectLevelScreen extends ScreenAdapter {
         innerTable = new Table();
 
         createButton(headerTexture, levelType.name().replace("_", " "), 50, null);
-        createButton(buttonTexture, "BACK", 100, addAction(() -> {screen=null;AnimAssSudokuModern.launcher.setScreen(SelectDifficultyScreen.screen);}));
+        createButton(buttonTexture, "BACK", 100, addAction(() -> {
+            screen = null;
+            AnimAssSudokuModern.launcher.setScreen(SelectDifficultyScreen.screen);
+        }));
 
 
         Preferences prefs = Gdx.app.getPreferences(PREFERENCE_SAVING_PATH);
         for (Level level : levels) {
 
-            String levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + level.getName();
+            String levelScoreSavingPath = level.getSudoku().getSudokuDifficulty().name() + "-" + level.getName();
             int moves = prefs.getInteger(levelScoreSavingPath, -1);
             boolean isPassed = moves != -1;
 

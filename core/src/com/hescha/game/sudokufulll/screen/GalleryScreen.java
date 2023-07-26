@@ -2,6 +2,8 @@ package com.hescha.game.sudokufulll.screen;
 
 
 import static com.hescha.game.sudokufulll.AnimAssSudokuModern.BACKGROUND_COLOR;
+import static com.hescha.game.sudokufulll.AnimAssSudokuModern.WORLD_HEIGHT;
+import static com.hescha.game.sudokufulll.AnimAssSudokuModern.WORLD_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -32,6 +34,8 @@ public class GalleryScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stageInfo;
     private BitmapFont bitmapFont;
+    OrthographicCamera camera;
+    SpriteBatch batch;
 
     public GalleryScreen(Level level) {
         this.level = level;
@@ -39,14 +43,17 @@ public class GalleryScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        float worldWidth = 512;
+        float worldWidth = 720;
         float worldHeight = 1280;
-        OrthographicCamera camera = new OrthographicCamera(worldWidth, worldHeight);
+        camera = new OrthographicCamera(worldWidth, worldHeight);
         camera.position.set(worldWidth / 2, worldHeight / 2, 0);
         camera.update();
         viewport = new FitViewport(worldWidth, worldHeight, camera);
         viewport.apply(true);
-        SpriteBatch batch = new SpriteBatch();
+
+        batch = new SpriteBatch();
+        batch.setProjectionMatrix(camera.projection);
+        batch.setTransformMatrix(camera.view);
 
         bitmapFont = FontUtil.generateFont(Color.BLACK);
 
@@ -63,16 +70,15 @@ public class GalleryScreen extends ScreenAdapter {
         table.setFillParent(true);
 
 
-
         TextureRegion mainBoard2 = new TextureRegion(buttonTexture);
         TextureRegionDrawable buttonDrawable2 = new TextureRegionDrawable(mainBoard2);
-        String text = level.getSudoku().getSudokuDifficulty().name() + "\n" + level.getCategory() + "\n"+ level.getName();
+        String text = level.getSudoku().getSudokuDifficulty().name() + "\n" + level.getName();
         ImageTextButton imageTextButton2 = new ImageTextButton(text.replace("_", " "),
                 new ImageTextButton.ImageTextButtonStyle(buttonDrawable2, null, null, bitmapFont));
         innerTable.add(imageTextButton2).top().row();
 
         for (int i = 1; i <= 9; i++) {
-            Texture mainImage = new Texture(Gdx.files.internal(level.getImagePath()+i+".jpg"));
+            Texture mainImage = new Texture(Gdx.files.internal(level.getImagePath() + "/" + i + ".jpg"));
             TextureRegion mainBoard = new TextureRegion(mainImage);
             TextureRegionDrawable buttonDrawable = new TextureRegionDrawable(mainBoard);
             ImageTextButton imageTextButton = new ImageTextButton("", new ImageTextButton.ImageTextButtonStyle(buttonDrawable, null, null, bitmapFont));
@@ -105,6 +111,8 @@ public class GalleryScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(BACKGROUND_COLOR);
+        batch.setProjectionMatrix(camera.projection);
+        batch.setTransformMatrix(camera.view);
 
         stageInfo.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stageInfo.draw();
