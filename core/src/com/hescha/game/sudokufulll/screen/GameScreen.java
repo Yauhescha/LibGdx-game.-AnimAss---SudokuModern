@@ -241,8 +241,10 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         if (!isSolved) {
-            updatePuzzleStatus();
             elapsedTime += Gdx.graphics.getDeltaTime();
+            if (sudoku.isFilled()) {
+                updatePuzzleStatus();
+            }
         }
         infoLabel.setText("Difficulty: " + level.getSudoku().getSudokuDifficulty().name().replace("_", " ") + "\n" +
                 "Seconds: " + (int) elapsedTime + "\n" +

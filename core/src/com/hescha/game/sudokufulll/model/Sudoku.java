@@ -31,4 +31,13 @@ public class Sudoku  implements Serializable {
     public void setSelectedSell(SudokuCell selectedSell) {
         this.selectedSell = selectedSell;
     }
+
+    public boolean isFilled() {
+        for (SudokuCell[] sudokuCells : board) {
+            for (SudokuCell sudokuCell : sudokuCells) {
+                if(sudokuCell.getNumber()<=0)return false;
+            }
+        }
+        return true;
+    }
 }
